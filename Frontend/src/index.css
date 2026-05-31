@@ -1,0 +1,459 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   🛠️ GLOBAL RESET - Universal Layout Fix
+   ============================================ */
+
+/* 1. Fix body - use 100% NOT 100vw to avoid blue line */
+html, body {
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; /* Stops the "second page" scroll on the whole window */
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Fix the Root Wrapper */
+#root, #app-root {
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* 3. The magic fix - Content scrolls HERE, not on body */
+main {
+  flex: 1 1 auto;
+  height: 100vh;
+  overflow-y: auto; /* Content scrolls inside main */
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem !important;
+  gap: 1.25rem !important;
+}
+
+/* 4. Shrink Hero/Headers on all pages */
+main > h1,
+main h1:first-of-type,
+.hero-section,
+[class*="Hero"],
+[class*="hero"] {
+  margin-top: 0 !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.25rem !important;
+  flex-shrink: 0 !important;
+  max-height: 280px !important;
+  min-height: auto !important;
+}
+
+/* 5. Theme toggle - bottom-right, not blocking content */
+.theme-toggle-container {
+  position: fixed !important;
+  z-index: 9997 !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  top: auto !important;
+}
+
+/* 6. Music player - bottom-left */
+.music-player {
+  position: fixed !important;
+  z-index: 9996 !important;
+  bottom: 24px !important;
+  left: 280px !important;
+  top: auto !important;
+}
+
+/* 7. Grid containers - space at bottom for scrolling */
+.grid,
+[class*="grid"],
+[class*="feed"],
+.space-y-16,
+[class*="space-y-"] {
+  padding-bottom: 2rem !important;
+}
+
+/* 8. Reduce section spacing */
+main .space-y-16,
+main > div > [class*="space-y-"] {
+  gap: 1rem !important;
+}
+
+/* Reduce pb-16 on all containers */
+main .pb-16,
+main [class*="pb-16"] {
+  padding-bottom: 1rem !important;
+}
+
+/* ============================================
+   🎨 THEME VARIABLES
+   ============================================ */
+@layer base {
+  :root {
+    --background: 222.2 84% 3.5%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 5.5%;
+    --card-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 12.5%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --radius: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-sm: 0.5rem;
+    --glow-primary: 0 0 40px rgba(59, 130, 246, 0.3);
+    --glow-success: 0 0 40px rgba(34, 197, 94, 0.3);
+    --glow-warning: 0 0 40px rgba(234, 179, 8, 0.3);
+    --glow-destructive: 0 0 40px rgba(239, 68, 68, 0.3);
+    --glass-opacity: 0.4;
+    --blur-intensity: 16px;
+    --ide-bg: #0d1117;
+    --ide-header: #161b22;
+    --ide-border: #30363d;
+    --ide-text: #c9d1d9;
+    --ide-muted: #8b949e;
+    --ide-subtle: #484f58;
+  }
+
+  [data-theme="light"] {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 98%;
+    --card-foreground: 222.2 84% 4.9%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 217.2 91.2% 59.8%;
+    --glass-opacity: 0.7;
+    --blur-intensity: 12px;
+  }
+
+  [data-theme="white"] {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --border: 0 0% 80%;
+    --input: 0 0% 95%;
+    --ring: 0 0% 0%;
+    --glass-opacity: 0.9;
+    --blur-intensity: 8px;
+  }
+
+  * { 
+    border-color: hsl(var(--border)); 
+    scroll-behavior: smooth; 
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.08), transparent 50%),
+      radial-gradient(circle at 80% 70%, hsl(var(--primary) / 0.05), transparent 60%),
+      radial-gradient(circle at 50% -20%, hsl(var(--primary) / 0.15), transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Full-screen mode for Playground */
+  body.playground-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+    background-image: none !important;
+    background-color: #0d1117 !important;
+  }
+
+  body.playground-active #root {
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+
+  body.playground-active .sidebar,
+  body.playground-active .header-nav,
+  body.playground-active footer,
+  body.playground-active .music-player {
+    display: none !important;
+  }
+
+  ::selection { 
+    background-color: hsl(var(--primary) / 0.3); 
+    color: hsl(var(--foreground)); 
+  }
+
+  /* Premium Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { 
+    background: hsl(var(--background)); 
+    border-left: 1px solid hsl(var(--border) / 0.3);
+  }
+  ::-webkit-scrollbar-thumb { 
+    background: linear-gradient(180deg, hsl(var(--primary) / 0.6), hsl(var(--primary) / 0.4));
+    border-radius: 9999px; 
+    border: 2px solid hsl(var(--background));
+    transition: all 0.3s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover { 
+    background: linear-gradient(180deg, hsl(var(--primary) / 0.8), hsl(var(--primary) / 0.6));
+  }
+}
+
+/* ============================================
+   🎭 PREMIUM COMPONENTS
+   ============================================ */
+@layer components {
+  .glass {
+    background: rgba(15, 23, 42, var(--glass-opacity));
+    backdrop-filter: blur(var(--blur-intensity)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur-intensity)) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.5);
+    border-radius: var(--radius);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-card {
+    background: linear-gradient(135deg, hsl(var(--card) / 0.7) 0%, hsl(var(--card) / 0.3) 100%);
+    backdrop-filter: blur(calc(var(--blur-intensity) * 1.25)) saturate(200%);
+    -webkit-backdrop-filter: blur(calc(var(--blur-intensity) * 1.25)) saturate(200%);
+    border: 1px solid hsl(var(--border) / 0.3);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4), 0 0 20px -3px hsl(var(--primary) / 0.2);
+  }
+
+  .glass-heavy {
+    background: hsl(var(--background) / 0.85);
+    backdrop-filter: blur(calc(var(--blur-intensity) * 1.5)) saturate(200%);
+    -webkit-backdrop-filter: blur(calc(var(--blur-intensity) * 1.5)) saturate(200%);
+    border: 1px solid hsl(var(--border) / 0.4);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .shadow-glow { box-shadow: var(--glow-primary); }
+
+  .distraction-hidden { display: none !important; pointer-events: none; }
+  .sidebar-focus-mode { opacity: 0.6; transition: opacity 0.3s ease; }
+  .sidebar-focus-mode:hover { opacity: 1; }
+
+  .focus-dock {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 10px 20px;
+  }
+
+  .focus-active-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; background: #0a0e17;
+  }
+
+  .logo-container {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 800; letter-spacing: -0.05em;
+    background: linear-gradient(to right, #60a5fa, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-icon {
+    filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.5));
+  }
+}
+
+/* ============================================
+   ✨ UTILITIES
+   ============================================ */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--primary)) 50%, hsl(var(--foreground)) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientFlow 4s ease infinite;
+  }
+
+  .text-gradient-static {
+    background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--primary)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .font-code { font-family: 'JetBrains Mono', monospace; }
+
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  .ide-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+  .ide-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .ide-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+  .ide-scrollbar::-webkit-scrollbar-thumb:hover { background: #484f58; }
+}
+
+/* ============================================
+   🎬 ANIMATIONS
+   ============================================ */
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 15px -5px hsl(var(--primary) / 0.2); }
+  100% { box-shadow: 0 0 35px 8px hsl(var(--primary) / 0.4); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes successPulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { box-shadow: 0 0 40px 15px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+@keyframes lockdownActivate {
+  0% { opacity: 0; backdrop-filter: blur(0px); transform: scale(1.02); }
+  100% { opacity: 1; backdrop-filter: blur(32px); transform: scale(1); }
+}
+
+.animate-pulse-glow { animation: pulseGlow 3s infinite alternate; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-shimmer { position: relative; overflow: hidden; }
+.animate-shimmer::after {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+}
+.success-pulse { animation: successPulse 1.5s ease-out; }
+
+.lockdown-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background-color: hsl(var(--background) / 0.97);
+  backdrop-filter: blur(32px) saturate(200%);
+  display: flex; align-items: center; justify-content: center;
+  animation: lockdownActivate 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================
+   🔒 LOCKDOWN / FOCUS MODE
+   ============================================ */
+#lockdown-root {
+  position: fixed !important; inset: 0 !important;
+  z-index: 999998 !important; pointer-events: none !important;
+  background: transparent !important;
+}
+
+body.lockdown-active footer,
+body.lockdown-active .music-player,
+body.lockdown-active .notification-bell,
+body.lockdown-active .news-widget,
+body.lockdown-active .jobs-widget,
+body.lockdown-active .ai-tools-section,
+body.lockdown-active .daily-update-section,
+body.lockdown-active .trust-section,
+body.lockdown-active .benefits-section,
+body.lockdown-active .theme-toggle-container {
+  display: none !important;
+}
+
+body.lockdown-active .sidebar {
+  display: flex !important; visibility: visible !important;
+  opacity: 0.7 !important; transition: opacity 0.3s ease !important;
+}
+body.lockdown-active .sidebar:hover { opacity: 1 !important; }
+
+body.lockdown-active header {
+  display: flex !important; visibility: visible !important;
+  opacity: 1 !important; z-index: 99999 !important;
+}
+
+body.lockdown-active main {
+  display: flex !important; visibility: visible !important;
+  opacity: 1 !important; flex: 1 1 auto !important;
+  min-height: 0 !important; width: 100% !important; max-width: 100% !important;
+}
+
+body.lockdown-active #app-root { flex-direction: row !important; }
+
+body.lockdown-active main {
+  margin-left: 0; width: calc(100% - 260px) !important; padding: 1.5rem !important;
+}
+
+/* ============================================
+   📱 RESPONSIVE
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .glass, .glass-card, .glass-heavy {
+    background: hsl(var(--background));
+    border: 2px solid hsl(var(--foreground));
+    backdrop-filter: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .glass-card:hover { transform: none; }
+}
+
+@media (max-width: 768px) {
+  main { padding: 1rem !important; gap: 1rem !important; }
+  .music-player { left: 10px !important; }
+  body.lockdown-active main { width: 100% !important; margin-left: 0 !important; }
+}

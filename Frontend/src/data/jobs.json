@@ -1,0 +1,254 @@
+{
+  "jobs": [
+    {
+      "id": "1",
+      "title": "Senior Frontend Developer",
+      "company": "TechCorp",
+      "companyLogo": "🏢",
+      "location": "San Francisco, CA",
+      "type": "Full-time",
+      "experience": "Senior",
+      "category": "Frontend",
+      "salary": "$120k - $160k",
+      "description": "We're looking for an experienced Frontend Developer to join our team and help build amazing user experiences.",
+      "requirements": ["React", "TypeScript", "Tailwind CSS", "Next.js", "GraphQL", "Jest"],
+      "responsibilities": [
+        "Build and maintain scalable frontend applications",
+        "Collaborate with designers and backend engineers",
+        "Mentor junior developers",
+        "Drive technical decisions and architecture"
+      ],
+      "benefits": [
+        "Competitive salary and equity",
+        "Health, dental, and vision insurance",
+        "Unlimited PTO",
+        "Remote-friendly culture"
+      ],
+      "tags": ["React", "TypeScript", "Remote", "Senior"],
+      "remote": true,
+      "postedAt": "2024-04-01T10:00:00Z",
+      "deadline": "2024-05-01T23:59:59Z",
+      "applyUrl": "https://techcorp.com/careers/senior-frontend",
+      "saved": false,
+      "views": 1245
+    },
+    {
+      "id": "2",
+      "title": "Full Stack Engineer",
+      "company": "StartupX",
+      "companyLogo": "🚀",
+      "location": "New York, NY",
+      "type": "Full-time",
+      "experience": "Mid Level",
+      "category": "Full Stack",
+      "salary": "$100k - $140k",
+      "description": "Join our fast-growing startup as a Full Stack Engineer and help us scale our platform to millions of users.",
+      "requirements": ["JavaScript", "Python", "React", "Node.js", "PostgreSQL", "AWS"],
+      "responsibilities": [
+        "Develop features across the entire stack",
+        "Optimize application performance",
+        "Write clean, maintainable code",
+        "Participate in code reviews"
+      ],
+      "benefits": [
+        "Competitive salary",
+        "Stock options",
+        "Flexible work hours",
+        "Learning budget"
+      ],
+      "tags": ["Full Stack", "React", "Python", "Startup"],
+      "remote": true,
+      "postedAt": "2024-04-05T14:30:00Z",
+      "applyUrl": "https://startupx.com/jobs/full-stack",
+      "saved": true,
+      "views": 892
+    },
+    {
+      "id": "3",
+      "title": "React Native Developer",
+      "company": "MobileFirst",
+      "companyLogo": "📱",
+      "location": "Austin, TX",
+      "type": "Contract",
+      "experience": "Mid Level",
+      "category": "Mobile",
+      "salary": "$70 - $90/hr",
+      "description": "Build cross-platform mobile applications using React Native for our growing client base.",
+      "requirements": ["React Native", "TypeScript", "iOS", "Android", "Redux", "Firebase"],
+      "responsibilities": [
+        "Develop and maintain mobile applications",
+        "Integrate with RESTful APIs",
+        "Optimize app performance",
+        "Publish apps to App Store and Google Play"
+      ],
+      "benefits": [
+        "Competitive hourly rate",
+        "Flexible schedule",
+        "Remote work",
+        "Long-term contract"
+      ],
+      "tags": ["Mobile", "React Native", "Contract", "Remote"],
+      "remote": true,
+      "postedAt": "2024-04-08T09:15:00Z",
+      "applyUrl": "https://mobilefirst.io/contracts/react-native",
+      "saved": false,
+      "views": 567
+    },
+    {
+      "id": "4",
+      "title": "Backend Developer (Python)",
+      "company": "DataFlow",
+      "companyLogo": "🐍",
+      "location": "Seattle, WA",
+      "type": "Full-time",
+      "experience": "Senior",
+      "category": "Backend",
+      "salary": "$130k - $170k",
+      "description": "Design and implement scalable backend services that power our data processing platform.",
+      "requirements": ["Python", "Django", "FastAPI", "PostgreSQL", "Redis", "Docker", "Kubernetes"],
+      "responsibilities": [
+        "Architect and build backend services",
+        "Design database schemas",
+        "Implement caching strategies",
+        "Ensure high availability and scalability"
+      ],
+      "benefits": [
+        "Top-tier salary",
+        "Annual bonus",
+        "401k matching",
+        "Professional development"
+      ],
+      "tags": ["Backend", "Python", "Django", "Senior"],
+      "remote": false,
+      "postedAt": "2024-04-03T11:20:00Z",
+      "applyUrl": "https://dataflow.com/careers/backend-python",
+      "saved": false,
+      "views": 1567
+    },
+    {
+      "id": "5",
+      "title": "Junior Web Developer",
+      "company": "WebStudio",
+      "companyLogo": "💻",
+      "location": "Remote",
+      "type": "Internship",
+      "experience": "Entry Level",
+      "category": "Frontend",
+      "salary": "$25 - $35/hr",
+      "description": "Great opportunity for new developers to gain hands-on experience building real-world web applications.",
+      "requirements": ["HTML", "CSS", "JavaScript", "React", "Git"],
+      "responsibilities": [
+        "Build responsive web pages",
+        "Work with senior developers",
+        "Participate in team meetings",
+        "Learn modern development practices"
+      ],
+      "benefits": [
+        "Paid internship",
+        "Mentorship program",
+        "Flexible hours",
+        "Potential full-time offer"
+      ],
+      "tags": ["Internship", "React", "Remote", "Entry Level"],
+      "remote": true,
+      "postedAt": "2024-04-10T08:00:00Z",
+      "applyUrl": "https://webstudio.dev/internships/junior-dev",
+      "saved": true,
+      "views": 2341
+    },
+    {
+      "id": "6",
+      "title": "DevOps Engineer",
+      "company": "CloudScale",
+      "companyLogo": "☁️",
+      "location": "Chicago, IL",
+      "type": "Full-time",
+      "experience": "Senior",
+      "category": "DevOps",
+      "salary": "$140k - $180k",
+      "description": "Manage and scale our cloud infrastructure across multiple regions.",
+      "requirements": ["AWS", "Terraform", "Kubernetes", "Docker", "CI/CD", "Python", "Bash"],
+      "responsibilities": [
+        "Manage cloud infrastructure",
+        "Implement CI/CD pipelines",
+        "Monitor system health",
+        "Respond to incidents"
+      ],
+      "benefits": [
+        "Competitive compensation",
+        "On-call bonus",
+        "Health benefits",
+        "Continuous learning"
+      ],
+      "tags": ["DevOps", "AWS", "Kubernetes", "Senior"],
+      "remote": true,
+      "postedAt": "2024-04-02T13:45:00Z",
+      "applyUrl": "https://cloudscale.io/jobs/devops",
+      "saved": false,
+      "views": 1023
+    },
+    {
+      "id": "7",
+      "title": "Data Scientist",
+      "company": "AnalyticsPro",
+      "companyLogo": "📊",
+      "location": "Boston, MA",
+      "type": "Full-time",
+      "experience": "Mid Level",
+      "category": "Data Science",
+      "salary": "$110k - $150k",
+      "description": "Use data to drive business decisions and build predictive models.",
+      "requirements": ["Python", "SQL", "Pandas", "Scikit-learn", "TensorFlow", "Tableau"],
+      "responsibilities": [
+        "Analyze large datasets",
+        "Build machine learning models",
+        "Create data visualizations",
+        "Present findings to stakeholders"
+      ],
+      "benefits": [
+        "Competitive salary",
+        "Performance bonus",
+        "Health insurance",
+        "Education stipend"
+      ],
+      "tags": ["Data Science", "Python", "Machine Learning", "Mid Level"],
+      "remote": false,
+      "postedAt": "2024-04-07T10:30:00Z",
+      "applyUrl": "https://analyticspro.com/jobs/data-scientist",
+      "saved": false,
+      "views": 876
+    },
+    {
+      "id": "8",
+      "title": "Security Engineer",
+      "company": "SecureNet",
+      "companyLogo": "🔒",
+      "location": "Washington, DC",
+      "type": "Full-time",
+      "experience": "Senior",
+      "category": "Security",
+      "salary": "$150k - $190k",
+      "description": "Protect our infrastructure and applications from security threats.",
+      "requirements": ["Security+", "CISSP", "Python", "OWASP", "Penetration Testing", "SIEM"],
+      "responsibilities": [
+        "Conduct security assessments",
+        "Implement security controls",
+        "Respond to security incidents",
+        "Train developers on security best practices"
+      ],
+      "benefits": [
+        "Premium salary",
+        "Security clearance bonus",
+        "Comprehensive benefits",
+        "Training certifications paid"
+      ],
+      "tags": ["Security", "Senior", "Clearance"],
+      "remote": false,
+      "postedAt": "2024-04-04T09:00:00Z",
+      "applyUrl": "https://securenet.com/careers/security-engineer",
+      "saved": true,
+      "views": 654
+    }
+  ],
+  "total": 8
+}

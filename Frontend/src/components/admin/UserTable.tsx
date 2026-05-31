@@ -1,0 +1,3 @@
+export const UserTable = ({ users }: { users: { id: string; name: string; email: string; progress: number }[] }) => (
+  <div className="glass-card overflow-x-auto"><table className="w-full"><thead><tr className="border-b border-white/10"><th className="p-3 text-left">Name</th><th className="p-3 text-left">Email</th><th className="p-3 text-left">Progress</th></tr></thead><tbody>{users.map(u => <tr key={u.id} className="border-b border-white/5"><td className="p-3">{u.name}</td><td className="p-3 text-muted-foreground">{u.email}</td><td className="p-3">{u.progress}%</td></tr>)}</tbody></table></div>
+);

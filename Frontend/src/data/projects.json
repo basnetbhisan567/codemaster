@@ -1,0 +1,211 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "3-Column Preview Card",
+      "description": "Build a responsive 3-column card component and make it look great on all devices.",
+      "level": 1,
+      "category": "Web",
+      "techStack": ["HTML", "CSS", "Flexbox"],
+      "estimatedTime": "1-2 hours",
+      "difficulty": "Beginner",
+      "source": "FrontendMentor",
+      "sourceUrl": "https://www.frontendmentor.io/challenges/3column-preview-card",
+      "sourceLabel": "via FrontendMentor",
+      "requirements": [
+        "Create 3 responsive columns",
+        "Add hover states for interactive elements",
+        "Ensure mobile-friendly layout",
+        "Match the design as closely as possible"
+      ],
+      "learningObjectives": [
+        "Master CSS Flexbox layout",
+        "Understand responsive design principles",
+        "Learn CSS custom properties (variables)",
+        "Practice mobile-first development"
+      ],
+      "resources": [
+        { "title": "CSS Flexbox Guide", "url": "/learning/css-flexbox" },
+        { "title": "Responsive Design", "url": "/learning/responsive-design" }
+      ],
+      "previewImage": "/projects/preview-card.jpg",
+      "livePreview": "https://preview-card-demo.vercel.app",
+      "aiContext": "I want to build a 3-column preview card component. Help me understand how to structure the HTML and CSS.",
+      "completed": false,
+      "progress": 0
+    },
+    {
+      "id": "2",
+      "title": "Interactive Rating Component",
+      "description": "Build an interactive rating component with hover states and thank you state.",
+      "level": 2,
+      "category": "Web",
+      "techStack": ["HTML", "CSS", "JavaScript"],
+      "estimatedTime": "2-3 hours",
+      "difficulty": "Apprentice",
+      "source": "FrontendMentor",
+      "sourceUrl": "https://www.frontendmentor.io/challenges/interactive-rating-component",
+      "sourceLabel": "via FrontendMentor",
+      "requirements": [
+        "Create rating buttons 1-5",
+        "Show hover and active states",
+        "Display 'Thank you' state after submission",
+        "Show selected rating in thank you message"
+      ],
+      "learningObjectives": [
+        "Handle user events with JavaScript",
+        "Manage component state",
+        "Implement conditional rendering",
+        "Create smooth transitions"
+      ],
+      "resources": [
+        { "title": "JavaScript Events", "url": "/learning/js-events" },
+        { "title": "State Management", "url": "/learning/state" }
+      ],
+      "previewImage": "/projects/rating-component.jpg",
+      "livePreview": "https://rating-demo.vercel.app",
+      "aiContext": "I'm building an interactive rating component. How do I handle the rating selection and display the thank you state?",
+      "completed": false,
+      "progress": 25
+    },
+    {
+      "id": "3",
+      "title": "REST Countries API",
+      "description": "Build a country explorer that fetches data from the REST Countries API.",
+      "level": 3,
+      "category": "Web",
+      "techStack": ["React", "TypeScript", "REST API", "Tailwind"],
+      "estimatedTime": "4-6 hours",
+      "difficulty": "Intermediate",
+      "source": "FrontendMentor",
+      "sourceUrl": "https://www.frontendmentor.io/challenges/rest-countries-api",
+      "sourceLabel": "via FrontendMentor",
+      "requirements": [
+        "Fetch all countries from REST API",
+        "Display countries in a responsive grid",
+        "Implement search by country name",
+        "Filter by region",
+        "Show detailed country page"
+      ],
+      "learningObjectives": [
+        "Work with REST APIs",
+        "Implement search and filter functionality",
+        "Use React Router for navigation",
+        "Handle loading and error states"
+      ],
+      "resources": [
+        { "title": "React Router", "url": "/learning/react-router" },
+        { "title": "Fetch API", "url": "/learning/fetch-api" }
+      ],
+      "previewImage": "/projects/countries-api.jpg",
+      "livePreview": "https://countries-demo.vercel.app",
+      "aiContext": "I'm building a country explorer with React. Help me implement the search and filter functionality.",
+      "completed": false,
+      "progress": 0
+    },
+    {
+      "id": "4",
+      "title": "Full-Stack Task Manager",
+      "description": "Build a complete task management app with authentication and database.",
+      "level": 4,
+      "category": "Web",
+      "techStack": ["Next.js", "Prisma", "PostgreSQL", "NextAuth"],
+      "estimatedTime": "1 week",
+      "difficulty": "Advanced",
+      "source": "GitHub",
+      "sourceUrl": "https://github.com/example/task-manager",
+      "sourceLabel": "via GitHub",
+      "requirements": [
+        "User authentication with email/password",
+        "Create, read, update, delete tasks",
+        "Assign tasks to categories",
+        "Real-time updates",
+        "Responsive design"
+      ],
+      "learningObjectives": [
+        "Build a full-stack application",
+        "Implement authentication",
+        "Design database schemas",
+        "Deploy to production"
+      ],
+      "resources": [
+        { "title": "Next.js Documentation", "url": "/learning/nextjs" },
+        { "title": "Prisma Guide", "url": "/learning/prisma" }
+      ],
+      "previewImage": "/projects/task-manager.jpg",
+      "aiContext": "I'm building a full-stack task manager. Help me set up authentication with NextAuth.",
+      "completed": true,
+      "progress": 100
+    },
+    {
+      "id": "5",
+      "title": "Real-time Chat Application",
+      "description": "Build a scalable real-time chat app with WebSockets and message persistence.",
+      "level": 5,
+      "category": "Web",
+      "techStack": ["Node.js", "Socket.io", "Redis", "MongoDB", "React"],
+      "estimatedTime": "2 weeks",
+      "difficulty": "Expert",
+      "source": "GitHub",
+      "sourceUrl": "https://github.com/example/chat-app",
+      "sourceLabel": "via GitHub",
+      "requirements": [
+        "Real-time messaging with WebSockets",
+        "User presence (online/offline)",
+        "Message history persistence",
+        "Private and group chats",
+        "File sharing support",
+        "Horizontal scalability"
+      ],
+      "learningObjectives": [
+        "Master WebSocket communication",
+        "Implement real-time features",
+        "Design for scalability",
+        "Optimize database queries",
+        "Handle concurrent connections"
+      ],
+      "resources": [
+        { "title": "Socket.io Guide", "url": "/learning/socketio" },
+        { "title": "Redis Pub/Sub", "url": "/learning/redis" }
+      ],
+      "previewImage": "/projects/chat-app.jpg",
+      "aiContext": "I'm building a real-time chat app. Help me understand how to implement private messaging with Socket.io.",
+      "completed": false,
+      "progress": 10
+    },
+    {
+      "id": "6",
+      "title": "Flappy Bird Clone",
+      "description": "Build a simple Flappy Bird game using HTML Canvas and JavaScript.",
+      "level": 2,
+      "category": "Game Dev",
+      "techStack": ["HTML", "Canvas", "JavaScript"],
+      "estimatedTime": "3-4 hours",
+      "difficulty": "Apprentice",
+      "source": "GitHub",
+      "sourceUrl": "https://github.com/example/flappy-bird",
+      "sourceLabel": "via GitHub",
+      "requirements": [
+        "Create game loop with requestAnimationFrame",
+        "Handle gravity and collision detection",
+        "Implement score system",
+        "Add start/restart functionality"
+      ],
+      "learningObjectives": [
+        "Understand game loop mechanics",
+        "Master Canvas API",
+        "Learn collision detection",
+        "Practice game state management"
+      ],
+      "resources": [
+        { "title": "Canvas API", "url": "/learning/canvas" },
+        { "title": "Game Loops", "url": "/learning/game-loops" }
+      ],
+      "previewImage": "/projects/flappy-bird.jpg",
+      "livePreview": "https://flappy-demo.vercel.app",
+      "aiContext": "I'm building a Flappy Bird clone. Help me implement gravity and collision detection.",
+      "completed": false,
+      "progress": 50
+    }
+  ]
+}
