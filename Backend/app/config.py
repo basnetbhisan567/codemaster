@@ -29,11 +29,11 @@ class Settings(BaseSettings):
     ]
 
     # FREE AI APIs
-    GEMINI_API_KEY: str = "AIzaSyCQgvh39aNRlvc5JZZN5h5y_B9byVdYDaM"
-    GOOGLE_AI_API_KEY: str = "AIzaSyCQgvh39aNRlvc5JZZN5h5y_B9byVdYDaM"
-    GROQ_API_KEY: str = "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"
-    DEEPSEEK_API_KEY: str = "sk-b865ed2852f841a69c00c6c8138b33ce"
-    OPENROUTER_API_KEY: str = "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"
+    GEMINI_API_KEY: str = ""
+    GOOGLE_AI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
+    DEEPSEEK_API_KEY: str = ""
+    OPENROUTER_API_KEY: str = ""
 
     # Local AI
     OLLAMA_BASE_URL: str = "http://localhost:11434"
@@ -42,12 +42,12 @@ class Settings(BaseSettings):
     LOCALAI_ENABLED: bool = False
 
     # Security
-    SNYK_API_KEY: str = "203561fe-1778-486a-bf66-fabc3750c825"
+    SNYK_API_KEY: str = ""
 
     # Email
     RESEND_API_KEY: str = ""
-    STRIPE_SECRET_KEY: str = "sk_test_51TccZT1rTYVRDCiu6mazKYInueVArPom0TSDuhjslAxOltbhsrAzOeMUD5ATxNZXidyiT587JcKTU09hflD7Nhb90093PKwZMm"
-    STRIPE_PUBLISHABLE_KEY: str = "pk_test_51TccZT1rTYVRDCiujqB1Tq6BjUTNVBZV8I4zsJEMuzU47mMkurpa13gaDLCAAHK399qbLACaKU0NbhkEMPrV6hFD00BSpu62Ht"
+    STRIPE_SECRET_KEY: str = ""
+    STRIPE_PUBLISHABLE_KEY: str = ""
 
     # SMS
     TWILIO_SID: str = ""
