@@ -3,7 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from datetime import datetime, timezone
 from app.core.database import get_db, engine
-from app.core.redis import redis_client
+try:
+    from app.core.redis import redis_client
+except ImportError:
+    redis_client = None
 from app.core.logger import logger
 
 router = APIRouter(prefix="/health", tags=["Health"])
