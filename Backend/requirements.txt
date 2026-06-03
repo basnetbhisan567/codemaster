@@ -13,3 +13,4 @@ python-dotenv==1.0.1
 groq==1.4.0
 email-validator==2.3.0
 stripe==15.2.0
+redis>=5.0.0
