@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 
@@ -16,6 +16,8 @@ class BadgeItem(BaseModel):
 
 
 class ProfileResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     email: str
@@ -37,12 +39,9 @@ class ProfileResponse(BaseModel):
     focus_hours: int
     email_verified: bool
     phone_verified: bool
-    skills: List[SkillItem] = []
-    badges: List[BadgeItem] = []
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
+    skills: List[SkillItem] = Field(default_factory=list)
+    badges: List[BadgeItem] = Field(default_factory=list)
+    created_at: Optional[datetime] = None
 
 
 class ProfileUpdateRequest(BaseModel):

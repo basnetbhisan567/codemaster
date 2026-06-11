@@ -56,6 +56,8 @@ class ChatMessage(Base):
     id = Column(Integer, primary_key=True, index=True)
     sender_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     content = Column(Text, default="")
+    encrypted_content = Column(Text, default="")
+    encryption_key_id = Column(String(100), default="")
     room = Column(String(50), default="global")
     message_type = Column(String(20), default="text")
     file_url = Column(String(500), default="")

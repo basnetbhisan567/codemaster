@@ -385,7 +385,7 @@ const Assignments = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await apiClient.get('/assignments/', { requiresAuth: true });
+      const response = await apiClient.get('/assignments/', { requiresAuth: false });
       if (response.data) {
         setAssignments(response.data as AssignmentFromAPI[]);
       }
@@ -431,7 +431,7 @@ const Assignments = () => {
         priority: 'medium',
         tags: [],
         xp_reward: 200,
-      }, { requiresAuth: true });
+      }, { requiresAuth: false });
       
       if (response.data) {
         setAssignments(prev => [response.data as AssignmentFromAPI, ...prev]);
@@ -445,7 +445,7 @@ const Assignments = () => {
 
   const handleStatusChange = async (id: number, status: string) => {
     try {
-      await apiClient.put(`/assignments/${id}`, { status }, { requiresAuth: true });
+      await apiClient.put(`/assignments/${id}`, { status }, { requiresAuth: false });
       setAssignments(prev => prev.map(a => a.id === id ? { ...a, status, progress: status === 'completed' ? 100 : a.progress } : a));
     } catch (err: any) {
       console.error('Failed to update:', err);
@@ -454,7 +454,7 @@ const Assignments = () => {
 
   const handleSaveNotes = async (id: number, notes: string) => {
     try {
-      await apiClient.put(`/assignments/${id}`, { notes }, { requiresAuth: true });
+      await apiClient.put(`/assignments/${id}`, { notes }, { requiresAuth: false });
       setAssignments(prev => prev.map(a => a.id === id ? { ...a, notes } : a));
     } catch (err: any) {
       console.error('Failed to save notes:', err);
@@ -463,7 +463,7 @@ const Assignments = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await apiClient.delete(`/assignments/${id}`, { requiresAuth: true });
+      await apiClient.delete(`/assignments/${id}`, { requiresAuth: false });
       setAssignments(prev => prev.filter(a => a.id !== id));
     } catch (err: any) {
       console.error('Failed to delete:', err);
@@ -476,7 +476,7 @@ const Assignments = () => {
         code: '',
         demo_url: '',
         repo_url: '',
-      }, { requiresAuth: true });
+      }, { requiresAuth: false });
       alert(`Started: ${project.title}`);
     } catch (err: any) {
       console.error('Failed to start:', err);
@@ -659,3 +659,6 @@ const Assignments = () => {
 };
 
 export default Assignments;
+
+
+

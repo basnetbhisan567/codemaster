@@ -1,7 +1,7 @@
 import { ApiResponse, RequestConfig } from '../types/api.types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-const REQUEST_TIMEOUT = 10000;
+const REQUEST_TIMEOUT = 5000;;
 
 let isBackendAvailable = true;
 
@@ -46,9 +46,7 @@ class ApiClient {
 
     if (requiresAuth) {
       const token = this.getToken();
-      if (token) {
-        requestHeaders.Authorization = `Bearer ${token}`;
-      }
+      if (token) requestHeaders.Authorization = `Bearer ${token}`;
     }
 
     const controller = new AbortController();
@@ -119,3 +117,4 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
+

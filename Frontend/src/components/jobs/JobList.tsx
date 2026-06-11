@@ -6,8 +6,8 @@ import { Search } from 'lucide-react';
 interface JobListProps {
   jobs: Job[];
   loading: boolean;
-  selectedJobId?: string | null;
-  onToggleSave?: (id: string) => void;
+  selectedJobId?: number | null;
+  onToggleSave?: (id: number) => void;
   onSelectJob?: (job: Job) => void;
 }
 

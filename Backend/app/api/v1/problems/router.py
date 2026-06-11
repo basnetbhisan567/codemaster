@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Query
+﻿from fastapi import APIRouter, Depends, Query
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
-from app.core.security import get_current_user
+from app.core.security import get_current_user, get_optional_user
 from app.models.user import User
 from app.api.v1.problems.service import ProblemService, SubmissionService
 from app.schemas.problem import (
@@ -20,16 +20,13 @@ async def list_problems(
     language: Optional[str] = None,
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100),
-    current_user: Optional[User] = Depends(get_current_user),
+    current_user: User = Depends(get_optional_user),
     db: AsyncSession = Depends(get_db),
 ):
     return await ProblemService(db).list_problems(
         user_id=current_user.id if current_user else None,
-        difficulty=difficulty,
-        category=category,
-        language=language,
-        page=page,
-        limit=limit,
+        difficulty=difficulty, category=category, language=language,
+        page=page, limit=limit,
     )
 
 

@@ -1,45 +1,103 @@
-export type JobType = 'Full-time' | 'Part-time' | 'Contract' | 'Internship' | 'Freelance';
-export type ExperienceLevel = 'Entry Level' | 'Mid Level' | 'Senior' | 'Lead' | 'Principal';
-export type JobCategory = 'Frontend' | 'Backend' | 'Full Stack' | 'DevOps' | 'Data Science' | 'Mobile' | 'AI/ML' | 'Cloud' | 'Security' | 'Other';
+export type ApplicationStatus =
+  | 'saved'
+  | 'applied'
+  | 'interviewing'
+  | 'offered'
+  | 'accepted'
+  | 'rejected';
 
-export type Job = {
-  id: string;
+export interface Job {
+  id: number;
   title: string;
   company: string;
-  companyLogo?: string;
+  company_logo?: string;
   location: string;
-  type: JobType;
-  experience: ExperienceLevel;
-  category: JobCategory;
-  salary: string;
+  salary?: string;
   description: string;
-  requirements: string[];
-  responsibilities: string[];
-  benefits: string[];
-  tags: string[];
-  remote: boolean;
-  postedAt: string;
-  deadline?: string;
-  applyUrl: string;
-  saved: boolean;
-  views: number;
-};
+  requirements?: string[];
+  tags?: string[];
+  remote?: boolean;
+  source?: string;
+  posted_at?: string;
+  saved?: boolean;
+}
 
-export type JobFilters = {
-  search: string;
-  type: JobType | 'All';
-  experience: ExperienceLevel | 'All';
-  category: JobCategory | 'All';
-  location: string;
-  remote: boolean | null;
-  salaryMin: string;
-};
+export interface JobsResponse {
+  jobs: Job[];
+  total: number;
+}
 
-export type JobApplication = {
-  id: string;
-  jobId: string;
-  userId: string;
-  status: 'pending' | 'reviewed' | 'interview' | 'rejected' | 'offered';
-  appliedAt: string;
+export interface JobStats {
+  total: number;
+  remote: number;
+  internships: number;
+  saved: number;
+  applied: number;
+}
+
+export interface Application {
+  id: number;
+  job_id: number;
+  job_title: string;
+  company: string;
+  status: ApplicationStatus;
+  ats_score?: number;
+  applied_at?: string;
+  interview_date?: string | null;
   notes?: string;
-};
+}
+
+export interface ResumeExperience {
+  company?: string;
+  role?: string;
+  start_date?: string;
+  end_date?: string;
+  description?: string;
+}
+
+export interface ResumeEducation {
+  school?: string;
+  degree?: string;
+  field?: string;
+  start_date?: string;
+  end_date?: string;
+}
+
+export interface ResumeProject {
+  name?: string;
+  description?: string;
+  url?: string;
+}
+
+export interface ResumeData {
+  full_name: string;
+  email: string;
+  phone: string;
+  summary: string;
+  skills: string[];
+  experience: ResumeExperience[];
+  education: ResumeEducation[];
+  projects: ResumeProject[];
+  portfolio_url: string;
+  github_url: string;
+  linkedin_url: string;
+}
+
+export interface ATSResult {
+  score: number;
+  strengths: string[];
+  weaknesses: string[];
+  suggestions: string[];
+  overall_feedback: string;
+}
+
+export interface AssistantMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+export interface AssistantResponse {
+  response: string;
+  suggestions?: string[];
+  extracted_fields?: Record<string, unknown>;
+}

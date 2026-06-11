@@ -31,6 +31,9 @@ const Admin = lazy(() => import("./pages/Admin"));
 const Auth = lazy(() => import("./pages/Auth"));
 const LockScreen = lazy(() => import("./pages/LockScreen"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Plans = lazy(() => import("./pages/Plans"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentCancel = lazy(() => import("./pages/PaymentCancel"));
 
 const pageVariants = {
   initial: (direction: number) => ({ opacity: 0, x: direction > 0 ? 30 : -30, scale: 0.97, filter: "blur(4px)" }),
@@ -76,53 +79,37 @@ function PageLoader() {
   );
 }
 
-// ============================================
-// AUTH GUARD — checks localStorage for valid session
-// ============================================
 function AuthGuard() {
   const location = useLocation();
   const token = localStorage.getItem('auth_token');
   const userStr = localStorage.getItem('user');
-
   const isAuthenticated = !!token && !!userStr;
-
-  const publicPaths = ['/login', '/register'];
+  const publicPaths = ['/login', '/register', '/plans'];
   const isPublicPath = publicPaths.includes(location.pathname);
 
   if (!isAuthenticated && !isPublicPath) {
     return <Navigate to="/login" replace />;
   }
 
-  if (isAuthenticated && isPublicPath) {
+  if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/register')) {
     return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
 }
 
-// ============================================
-// DASHBOARD LAYOUT — Only renders when authenticated
-// ============================================
 function DashboardLayout() {
   const location = useLocation();
   const navigationDirection = useNavigationDirection();
 
   return (
     <div className="relative flex min-h-screen transition-all duration-500">
-      <motion.div
-        initial={{ x: -300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      >
+      <motion.div initial={{ x: -300, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
         <Sidebar />
       </motion.div>
 
       <div className="flex-1 flex flex-col">
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
+        <motion.div initial={{ y: -100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
           <Header>
             <NotificationBell />
           </Header>
@@ -155,11 +142,7 @@ function DashboardLayout() {
           </Suspense>
         </main>
 
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
+        <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
           <Footer />
         </motion.div>
       </div>
@@ -182,8 +165,6 @@ function App() {
   const [isAppReady, setIsAppReady] = useState(false);
   const { addNotification } = useNotificationStore();
   const { checkScheduledFocus, startFocus, endFocus, focusActive, isLocked, canExit } = useLockdownStore();
-
-  const isPublicRoute = ["/login", "/register"].includes(location.pathname);
 
   useEffect(() => { const timer = setTimeout(() => setIsAppReady(true), 100); return () => clearTimeout(timer); }, []);
 
@@ -234,6 +215,11 @@ function App() {
         {/* Public routes — NO sidebar/header/footer */}
         <Route path="/login" element={<PageWrapper variants={modalVariants}><Auth /></PageWrapper>} />
         <Route path="/register" element={<PageWrapper variants={modalVariants}><Auth /></PageWrapper>} />
+
+        {/* Plans & Payment — accessible without full dashboard layout but with auth */}
+        <Route path="/plans" element={<PageWrapper variants={pageVariants}><Plans /></PageWrapper>} />
+        <Route path="/payment/success" element={<PageWrapper variants={pageVariants}><PaymentSuccess /></PageWrapper>} />
+        <Route path="/payment/cancel" element={<PageWrapper variants={pageVariants}><PaymentCancel /></PageWrapper>} />
 
         {/* Protected routes — WITH sidebar/header/footer */}
         <Route element={<AuthGuard />}>

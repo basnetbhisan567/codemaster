@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+﻿from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from fastapi import HTTPException, status
 from app.models.project import Project, ProjectSubmission
@@ -56,7 +56,7 @@ class ProjectService:
                 times_completed=p.times_completed, is_completed=is_completed,
             ))
 
-        return ProjectListResponse(projects=project_list, total=total, page=page, limit=limit)
+        return ProjectListResponse(projects=project_list, total=total or 0, page=page, limit=limit)
 
     async def get_project(self, slug: str, user_id: int = None) -> ProjectResponse:
         result = await self.db.execute(select(Project).where(Project.slug == slug))
@@ -85,20 +85,15 @@ class ProjectService:
             times_completed=project.times_completed, is_completed=is_completed,
         )
 
-    async def submit_project(
-        self, user_id: int, slug: str, data: SubmitProjectRequest
-    ) -> ProjectSubmissionResponse:
+    async def submit_project(self, user_id: int, slug: str, data: SubmitProjectRequest) -> ProjectSubmissionResponse:
         result = await self.db.execute(select(Project).where(Project.slug == slug))
         project = result.scalar_one_or_none()
         if not project:
             raise HTTPException(status_code=404, detail="Project not found")
 
         submission = ProjectSubmission(
-            user_id=user_id,
-            project_id=project.id,
-            code=data.code,
-            demo_url=data.demo_url,
-            repo_url=data.repo_url,
+            user_id=user_id, project_id=project.id,
+            code=data.code, demo_url=data.demo_url, repo_url=data.repo_url,
             status="pending",
         )
         self.db.add(submission)

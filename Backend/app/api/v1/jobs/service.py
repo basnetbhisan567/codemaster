@@ -1,39 +1,41 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+﻿from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, func, or_
 from fastapi import HTTPException
-from datetime import datetime, timezone
 from app.models.job import Job
-from app.schemas.job import JobResponse, JobListResponse
+from app.schemas.job import *
 
 
 class JobService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def get_jobs(
-        self, search: str = None, remote: bool = None,
-        tag: str = None, page: int = 1, limit: int = 20
-    ) -> JobListResponse:
+    async def search_jobs(self, params: JobSearchRequest) -> JobListResponse:
         query = select(Job).where(Job.is_active == True)
-
-        if search:
-            query = query.where(
-                Job.title.ilike(f"%{search}%") | Job.company.ilike(f"%{search}%")
-            )
-        if remote is not None:
-            query = query.where(Job.remote == remote)
-        if tag:
-            query = query.where(Job.tags.contains([tag]))
-
+        
+        if params.query:
+            query = query.where(or_(
+                Job.title.ilike(f"%{params.query}%"),
+                Job.company.ilike(f"%{params.query}%"),
+                Job.description.ilike(f"%{params.query}%")
+            ))
+        if params.role:
+            query = query.where(Job.title.ilike(f"%{params.role}%"))
+        if params.location:
+            query = query.where(Job.location.ilike(f"%{params.location}%"))
+        if params.remote is not None:
+            query = query.where(Job.remote == params.remote)
+        if params.company:
+            query = query.where(Job.company.ilike(f"%{params.company}%"))
+        
         query = query.order_by(Job.posted_at.desc())
         total = await self.db.scalar(select(func.count()).select_from(query.subquery()))
-        offset = (page - 1) * limit
-        result = await self.db.execute(query.offset(offset).limit(limit))
+        offset = (params.page - 1) * params.limit
+        result = await self.db.execute(query.offset(offset).limit(params.limit))
         jobs = result.scalars().all()
-
+        
         return JobListResponse(
             jobs=[JobResponse.model_validate(j) for j in jobs],
-            total=total, page=page, limit=limit,
+            total=total or 0, page=params.page, limit=params.limit
         )
 
     async def get_job(self, job_id: int) -> JobResponse:
@@ -42,14 +44,3 @@ class JobService:
         if not job:
             raise HTTPException(status_code=404, detail="Job not found")
         return JobResponse.model_validate(job)
-
-    async def cleanup_old_jobs(self):
-        cutoff = datetime.now(timezone.utc)
-        result = await self.db.execute(
-            select(Job).where(Job.expires_at < cutoff, Job.is_active == True)
-        )
-        expired = result.scalars().all()
-        for job in expired:
-            job.is_active = False
-        await self.db.commit()
-        return {"removed": len(expired)}

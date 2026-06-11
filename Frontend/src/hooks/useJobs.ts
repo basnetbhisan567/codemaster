@@ -1,94 +1,85 @@
-import { useState, useEffect, useCallback } from 'react';
-import { jobService } from '../services/jobService';
-import { Job, JobFilters } from '../types/job';
+import { useCallback, useEffect, useState } from 'react';
+import { jobService, type Job, type JobStats } from '../services/jobService';
 
-export const useJobs = (initialFilters?: Partial<JobFilters>) => {
+
+export const useJobs = (search?: string, remote?: boolean, tag?: string) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<Partial<JobFilters>>(initialFilters || {});
-  const [stats, setStats] = useState({
-    totalJobs: 0,
-    remoteJobs: 0,
-    savedJobs: 0,
-    categories: 0,
+  const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState<JobStats>({
+    total: 0,
+    remote: 0,
+    internships: 0,
+    saved: 0,
+    applied: 0,
   });
+
 
   const fetchJobs = useCallback(async () => {
     setLoading(true);
     setError(null);
+
     try {
-      const data = Object.keys(filters).length > 0
-        ? await jobService.getFiltered(filters)
-        : await jobService.getAll();
-      setJobs(data);
-      
-      const statsData = await jobService.getStats();
-      setStats(statsData);
-    } catch (err) {
-      setError('Failed to load jobs');
-      console.error('Jobs fetch error:', err);
+      const data = await jobService.getAll(search, remote, tag);
+      setJobs(data.jobs || []);
+      setTotal(data.total || 0);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to load jobs');
+      setJobs([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [search, remote, tag]);
 
-  useEffect(() => {
-    fetchJobs();
-  }, [fetchJobs]);
 
-  const getJobById = useCallback(async (id: string) => {
+  const fetchStats = useCallback(async () => {
     try {
-      return await jobService.getById(id);
-    } catch (err) {
-      console.error('Failed to get job:', err);
+      const data = await jobService.getStats();
+      setStats(data);
+    } catch {
+      setStats({ total: 0, remote: 0, internships: 0, saved: 0, applied: 0 });
+    }
+  }, []);
+
+  // NEW: Get single job by ID
+  const getJobById = useCallback(async (id: string | number): Promise<Job | null> => {
+    try {
+      const data = await jobService.getById(Number(id));
+      return data;
+    } catch {
       return null;
     }
   }, []);
 
-  const toggleSave = useCallback(async (id: string) => {
-    try {
-      const saved = await jobService.toggleSave(id);
-      setJobs(prev => prev.map(job =>
-        job.id === id ? { ...job, saved } : job
-      ));
-      const statsData = await jobService.getStats();
-      setStats(statsData);
-      return saved;
-    } catch (err) {
-      console.error('Failed to toggle save:', err);
-      return false;
+  // NEW: Toggle save job
+  const toggleSave = useCallback(async (id: number) => {
+    const job = jobs.find((j) => j.id === id);
+    if (job) {
+      await jobService.saveJob(id);
+      setJobs((prev) =>
+        prev.map((j) => (j.id === id ? { ...j, saved: !j.saved } : j))
+      );
     }
-  }, []);
+  }, [jobs]);
 
-  const getSavedJobs = useCallback(async () => {
-    try {
-      return await jobService.getSaved();
-    } catch (err) {
-      console.error('Failed to get saved jobs:', err);
-      return [];
-    }
-  }, []);
 
-  const updateFilters = useCallback((newFilters: Partial<JobFilters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  }, []);
+  useEffect(() => {
+    fetchJobs();
+    fetchStats();
+  }, [fetchJobs, fetchStats]);
 
-  const clearFilters = useCallback(() => {
-    setFilters({});
-  }, []);
 
   return {
     jobs,
     loading,
     error,
-    filters,
+    total,
     stats,
-    updateFilters,
-    clearFilters,
+    refetch: fetchJobs,
+    refetchStats: fetchStats,
     getJobById,
     toggleSave,
-    getSavedJobs,
-    refetch: fetchJobs,
   };
 };

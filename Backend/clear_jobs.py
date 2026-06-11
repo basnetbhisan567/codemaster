@@ -7,6 +7,6 @@ async def clear():
     async with AsyncSessionLocal() as db:
         await db.execute(delete(Job))
         await db.commit()
-    print('Cleared!')
+    print('All jobs cleared')
 
 asyncio.run(clear())

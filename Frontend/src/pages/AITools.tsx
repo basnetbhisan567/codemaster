@@ -1,66 +1,210 @@
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AIToolsHighlight } from '../components/news/AIToolsHighlight';
+import { 
+  Sparkles, Search, Loader2, AlertCircle, ExternalLink,
+  Star, Clock, Globe, Tag, ChevronRight, Wand2,
+  Code, Brain, MessageSquare, Bug, Lightbulb
+} from 'lucide-react';
 import { Card } from '../components/ui/card';
-import { Sparkles, ExternalLink, Star } from 'lucide-react';
+import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+
+interface AITool {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  url: string;
+  github_url: string;
+  pricing: string;
+  features: string[];
+  tags: string[];
+  stars: number;
+  rating: number;
+  logo_url: string;
+  is_open_source: boolean;
+  view_count: number;
+}
 
 export default function AITools() {
-  const aiTools = [
-    { name: 'GitHub Copilot', description: 'AI pair programmer that suggests code completions', url: '#', category: 'Code', pricing: 'Freemium' as const, rating: 4.8 },
-    { name: 'Cursor', description: 'AI-first code editor with powerful editing features', url: '#', category: 'Editor', pricing: 'Free' as const, rating: 4.9 },
-    { name: 'v0 by Vercel', description: 'Generate UI components with AI prompts', url: '#', category: 'UI', pricing: 'Free' as const, rating: 4.7 },
-    { name: 'Claude', description: 'Advanced AI assistant for complex reasoning', url: '#', category: 'Assistant', pricing: 'Freemium' as const, rating: 4.8 },
-    { name: 'Tabnine', description: 'AI code completion for all major IDEs', url: '#', category: 'Code', pricing: 'Free' as const, rating: 4.6 },
-    { name: 'Replit Ghostwriter', description: 'AI-powered coding in the browser', url: '#', category: 'IDE', pricing: 'Freemium' as const, rating: 4.5 },
-    { name: 'Codeium', description: 'Free AI code assistant with autocomplete', url: '#', category: 'Code', pricing: 'Free' as const, rating: 4.7 },
-    { name: 'Phind', description: 'AI search engine for developers', url: '#', category: 'Search', pricing: 'Free' as const, rating: 4.6 },
-    { name: 'Warp', description: 'AI-powered terminal with smart completions', url: '#', category: 'Terminal', pricing: 'Free' as const, rating: 4.7 },
-  ];
+  const [tools, setTools] = useState<AITool[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('');
 
-  const categories = ['All', 'Code', 'Editor', 'Assistant', 'UI', 'Search', 'Terminal', 'IDE'];
+  const categories = ['all', 'code', 'chat', 'image', 'audio', 'productivity'];
+
+  const fetchTools = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const params = new URLSearchParams();
+      if (searchQuery) params.append('search', searchQuery);
+      if (activeCategory && activeCategory !== 'all') params.append('category', activeCategory);
+
+      // Use correct URL — no double /v1
+      const response = await fetch(`http://localhost:5000/api/v1/content/tools?${params}`);
+      
+      if (!response.ok) throw new Error('Failed to fetch tools');
+      
+      const data = await response.json();
+      setTools(data.tools || []);
+    } catch (err: any) {
+      setError(err.message);
+      setTools([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTools();
+  }, [activeCategory]);
+
+  const handleSearch = () => {
+    fetchTools();
+  };
+
+  const getCategoryIcon = (category: string) => {
+    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
+      code: Code,
+      chat: MessageSquare,
+      image: Sparkles,
+      audio: Sparkles,
+      productivity: Brain,
+    };
+    return icons[category] || Wand2;
+  };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-      <div className="flex items-center gap-3">
-        <Sparkles className="w-8 h-8 text-primary" />
-        <h1 className="text-3xl font-bold">AI Tools for Developers</h1>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 pb-12">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+          AI Tools
+        </h1>
+        <p className="text-muted-foreground mt-1">Discover the best AI tools for developers</p>
       </div>
 
-      {/* Categories */}
-      <div className="flex flex-wrap gap-2">
-        {categories.map((cat, i) => (
-          <Button key={i} variant={i === 0 ? 'default' : 'outline'} size="sm" className="rounded-full">
-            {cat}
-          </Button>
-        ))}
+      {/* Search & Filters */}
+      <div className="space-y-4">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Input
+              placeholder="Search AI tools..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSearch()}
+              className="pl-10"
+            />
+          </div>
+          <Button onClick={handleSearch}>Search</Button>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat === 'all' ? '' : cat)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
+                (cat === 'all' && !activeCategory) || activeCategory === cat
+                  ? 'bg-primary text-white'
+                  : 'bg-slate-800/50 text-slate-400 hover:text-white'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Featured Tool */}
-      <AIToolsHighlight tools={aiTools.slice(0, 4)} />
+      {/* Loading */}
+      {loading && (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <span className="ml-3 text-slate-400">Loading AI tools...</span>
+        </div>
+      )}
 
-      {/* All Tools Grid */}
-      <h2 className="text-xl font-semibold">All AI Tools</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {aiTools.map((tool, i) => (
-          <Card key={i} variant="interactive" className="p-5 group">
-            <div className="flex items-start justify-between">
-              <h3 className="font-semibold group-hover:text-primary transition-colors">{tool.name}</h3>
-              <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
+      {/* Error */}
+      {error && !loading && (
+        <Card variant="glass" className="p-6 text-center border-red-500/30">
+          <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-2" />
+          <p className="text-red-400">{error}</p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={fetchTools}>Retry</Button>
+        </Card>
+      )}
+
+      {/* Tools Grid */}
+      {!loading && !error && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {tools.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <Wand2 className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+              <p className="text-slate-400">No AI tools found</p>
+              <p className="text-sm text-slate-500 mt-1">Try adjusting your search or run the content fetcher</p>
+              <Button variant="outline" size="sm" className="mt-4" onClick={() => {
+                fetch('http://localhost:5000/api/v1/content/tools').then(r => r.json()).then(d => {
+                  if (d.tools?.length > 0) {
+                    setTools(d.tools);
+                  }
+                });
+              }}>
+                Refresh
+              </Button>
             </div>
-            <p className="text-sm text-muted-foreground mt-1 mb-3">{tool.description}</p>
-            <div className="flex items-center gap-2">
-              <span className="text-xs px-2 py-1 bg-primary/20 text-primary rounded-full">{tool.category}</span>
-              <span className="text-xs px-2 py-1 glass rounded-full">{tool.pricing}</span>
-              <span className="text-xs text-yellow-400 ml-auto flex items-center gap-0.5">
-                <Star className="w-3 h-3 fill-current" />
-                {tool.rating}
-              </span>
-            </div>
-          </Card>
-        ))}
-      </div>
+          ) : (
+            tools.map(tool => (
+              <motion.div key={tool.id} whileHover={{ y: -4 }}>
+                <Card variant="glass" className="p-5 h-full hover:border-primary/30 transition-all">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/30 to-blue-500/30 flex items-center justify-center flex-shrink-0">
+                      {React.createElement(getCategoryIcon(tool.category), { className: "w-5 h-5 text-white" })}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm truncate">{tool.name}</h3>
+                      <p className="text-xs text-slate-400 line-clamp-2 mt-1">{tool.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    <Badge variant="info" size="sm" className="text-xs">{tool.category}</Badge>
+                    <Badge variant={tool.pricing === 'free' ? 'success' : 'warning'} size="sm" className="text-xs">
+                      {tool.pricing}
+                    </Badge>
+                    {tool.is_open_source && (
+                      <Badge variant="outline" size="sm" className="text-xs">Open Source</Badge>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-3 text-xs text-slate-500 mb-3">
+                    <span className="flex items-center gap-1"><Star className="w-3 h-3 text-yellow-400" />{tool.stars}</span>
+                    <span>⭐ {tool.rating}/5</span>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <a href={tool.url} target="_blank" rel="noopener noreferrer" className="flex-1">
+                      <Button size="sm" variant="outline" className="w-full gap-1">
+                        <ExternalLink className="w-3 h-3" /> Visit
+                      </Button>
+                    </a>
+                    {tool.github_url && (
+                      <a href={tool.github_url} target="_blank" rel="noopener noreferrer">
+                        <Button size="sm" variant="ghost" className="gap-1">
+                          <Code className="w-3 h-3" /> GitHub
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                </Card>
+              </motion.div>
+            ))
+          )}
+        </div>
+      )}
     </motion.div>
   );
 }

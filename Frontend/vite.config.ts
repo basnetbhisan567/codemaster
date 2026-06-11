@@ -23,12 +23,21 @@ export default defineConfig({
           vendor: ['react', 'react-dom', 'react-router-dom'],
           motion: ['framer-motion'],
           three: ['three', '@react-three/fiber', '@react-three/drei'],
+          monaco: ['monaco-editor', '@monaco-editor/react'],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'zustand'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'framer-motion',
+      'zustand',
+      'monaco-editor',
+      '@monaco-editor/react',
+    ],
   },
 });

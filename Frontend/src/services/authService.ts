@@ -39,13 +39,11 @@ export const authService = {
       requiresAuth: false,
     });
 
+    if (response.error) throw new Error(response.error.message || 'Registration failed');
+
     if (response.data?.access_token) {
       apiClient.setToken(response.data.access_token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-    }
-
-    if (response.error) {
-      throw new Error(response.error.message || 'Registration failed');
     }
 
     return response.data!;
@@ -58,25 +56,36 @@ export const authService = {
       requiresAuth: false,
     });
 
+    if (response.error) throw new Error(response.error.message || 'Login failed');
+
     if (response.data?.access_token) {
       apiClient.setToken(response.data.access_token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
     }
 
-    if (response.error) {
-      throw new Error(response.error.message || 'Login failed');
-    }
+    return response.data!;
+  },
 
+  async requestPasswordReset(data: { email: string }): Promise<{ message: string }> {
+    const response = await apiClient.request<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: data,
+      requiresAuth: false,
+    });
+
+    if (response.error) throw new Error(response.error.message || 'Password reset request failed');
     return response.data!;
   },
 
   async getProfile() {
     const response = await apiClient.get('/profile/', { requiresAuth: true });
+    if (response.error) throw new Error(response.error.message || 'Failed to load profile');
     return response.data;
   },
 
   async updateProfile(data: any) {
     const response = await apiClient.put('/profile/', data, { requiresAuth: true });
+    if (response.error) throw new Error(response.error.message || 'Failed to update profile');
     return response.data;
   },
 
@@ -84,6 +93,8 @@ export const authService = {
     apiClient.clearToken();
     localStorage.removeItem('user');
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('persist_session');
+    sessionStorage.removeItem('session_only');
   },
 
   isAuthenticated(): boolean {
@@ -95,15 +106,15 @@ export const authService = {
     return user ? JSON.parse(user) : null;
   },
 
-  // GitHub OAuth redirect
   async loginWithGithub() {
-    const redirectUrl = `${API_BASE_URL}/auth/github`;
-    window.location.href = redirectUrl;
+    window.location.href = `${API_BASE_URL}/auth/github`;
   },
 
-  // Google OAuth redirect
   async loginWithGoogle() {
-    const redirectUrl = `${API_BASE_URL}/auth/google`;
-    window.location.href = redirectUrl;
+    window.location.href = `${API_BASE_URL}/auth/google`;
   },
 };
+
+
+
+

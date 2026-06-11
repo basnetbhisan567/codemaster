@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MapPin, Briefcase, Clock, DollarSign, Building2, Globe, Calendar, ExternalLink, Bookmark, Users, Award, Zap } from 'lucide-react';
+import { MapPin, Briefcase, Clock, DollarSign, Building2, Globe, Bookmark, ExternalLink, Zap } from 'lucide-react';
 import { Job } from '../../types/job';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -7,22 +7,17 @@ import { cn } from '../../utils/cn';
 
 interface JobDetailCardProps {
   job: Job;
-  onToggleSave?: (id: string) => void;
+  onToggleSave?: (id: number) => void;
 }
 
 export const JobDetailCard = ({ job, onToggleSave }: JobDetailCardProps) => {
-  const timeAgo = (date: string) => {
+  const timeAgo = (date?: string) => {
+    if (!date) return '';
     const diff = Date.now() - new Date(date).getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     if (days === 0) return 'Today';
     if (days === 1) return 'Yesterday';
     return `${days} days ago`;
-  };
-
-  const formatDeadline = (date?: string) => {
-    if (!date) return 'No deadline';
-    const deadline = new Date(date);
-    return deadline.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   };
 
   return (
@@ -34,9 +29,9 @@ export const JobDetailCard = ({ job, onToggleSave }: JobDetailCardProps) => {
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center text-3xl flex-shrink-0">
-          {job.companyLogo || '🏢'}
+          {job.company_logo || '🏢'}
         </div>
-        
+
         <div className="flex-1">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -46,6 +41,7 @@ export const JobDetailCard = ({ job, onToggleSave }: JobDetailCardProps) => {
                 {job.company}
               </p>
             </div>
+
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onToggleSave?.(job.id)}
@@ -58,26 +54,25 @@ export const JobDetailCard = ({ job, onToggleSave }: JobDetailCardProps) => {
               >
                 <Bookmark className={cn('w-5 h-5', job.saved && 'fill-current')} />
               </button>
+
               <Button className="gap-2">
                 Apply Now
                 <ExternalLink className="w-4 h-4" />
               </Button>
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-2 mt-3">
             <Badge variant="info" className="flex items-center gap-1">
               <MapPin className="w-3 h-3" />
               {job.location}
             </Badge>
-            <Badge variant="default" className="flex items-center gap-1">
-              <Briefcase className="w-3 h-3" />
-              {job.type}
-            </Badge>
-            <Badge variant="warning" className="flex items-center gap-1">
-              <DollarSign className="w-3 h-3" />
-              {job.salary}
-            </Badge>
+            {job.salary && (
+              <Badge variant="warning" className="flex items-center gap-1">
+                <DollarSign className="w-3 h-3" />
+                {job.salary}
+              </Badge>
+            )}
             {job.remote && (
               <Badge variant="success" className="flex items-center gap-1">
                 <Globe className="w-3 h-3" />
@@ -90,74 +85,50 @@ export const JobDetailCard = ({ job, onToggleSave }: JobDetailCardProps) => {
 
       {/* Meta info */}
       <div className="flex flex-wrap items-center gap-4 p-4 glass rounded-lg text-sm">
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-primary" />
-          <span>Posted {timeAgo(job.postedAt)}</span>
-        </div>
-        {job.deadline && (
+        {timeAgo(job.posted_at) && (
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-primary" />
-            <span>Apply by {formatDeadline(job.deadline)}</span>
+            <Clock className="w-4 h-4 text-primary" />
+            <span>Posted {timeAgo(job.posted_at)}</span>
           </div>
         )}
-        <div className="flex items-center gap-2">
-          <Users className="w-4 h-4 text-primary" />
-          <span>{job.views.toLocaleString()} views</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Award className="w-4 h-4 text-primary" />
-          <span>{job.experience}</span>
-        </div>
       </div>
 
       {/* Tags */}
-      <div>
-        <h3 className="font-semibold mb-2 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-primary" />
-          Skills & Technologies
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {job.tags.map((tag, i) => (
-            <Badge key={i} variant="outline">{tag}</Badge>
-          ))}
+      {job.tags && job.tags.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 flex items-center gap-2">
+            <Zap className="w-4 h-4 text-primary" />
+            Skills & Technologies
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {job.tags.map((tag, i) => (
+              <Badge key={i} variant="outline">
+                {tag}
+              </Badge>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Description */}
-      <div>
-        <h3 className="font-semibold mb-2">Description</h3>
-        <p className="text-muted-foreground leading-relaxed">{job.description}</p>
-      </div>
+      {job.description && (
+        <div>
+          <h3 className="font-semibold mb-2">Description</h3>
+          <p className="text-muted-foreground leading-relaxed">{job.description}</p>
+        </div>
+      )}
 
       {/* Requirements */}
-      <div>
-        <h3 className="font-semibold mb-2">Requirements</h3>
-        <ul className="list-disc list-inside text-muted-foreground space-y-1">
-          {job.requirements.map((req, i) => (
-            <li key={i}>{req}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Responsibilities */}
-      <div>
-        <h3 className="font-semibold mb-2">Responsibilities</h3>
-        <ul className="list-disc list-inside text-muted-foreground space-y-1">
-          {job.responsibilities.map((resp, i) => (
-            <li key={i}>{resp}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Benefits */}
-      <div>
-        <h3 className="font-semibold mb-2">Benefits</h3>
-        <ul className="list-disc list-inside text-muted-foreground space-y-1">
-          {job.benefits.map((benefit, i) => (
-            <li key={i}>{benefit}</li>
-          ))}
-        </ul>
-      </div>
+      {job.requirements && job.requirements.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2">Requirements</h3>
+          <ul className="list-disc list-inside text-muted-foreground space-y-1">
+            {job.requirements.map((req, i) => (
+              <li key={i}>{req}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Apply button */}
       <div className="pt-4 border-t border-white/10">
