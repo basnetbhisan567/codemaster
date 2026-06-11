@@ -89,3 +89,16 @@ backup/
 # STRIPE
 # ============================================
 .stripe/
+
+# Test/temp scripts
+*_test.py
+fix_*.py
+check_*.py
+count_*.py
+fetch_*.py
+rebuild_*.py
+rotate_*.py
+setup_*.py
+clear_*.py
+create_tables.py
+dedupe_*.py
